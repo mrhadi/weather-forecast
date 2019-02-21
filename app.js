@@ -1,4 +1,4 @@
-const { appInit, getCityName } = require("./forecast");
+const { appInit, getCityName } = require("./src/forecast");
 
 appInit();
 getCityName();

@@ -1,10 +1,11 @@
-const { version } = require('./package.json');
+const { version } = require('../package.json');
 const { openWeatherAPI, maxDays, dataPerDay } = require('./openweathermap');
 const chalk = require('chalk');
-const cityList = require('./resources/city.list');
+const cityList = require('../resources/city.list');
 const inquirer = require('inquirer');
 const jsSearch = require('js-search');
 const ttyTable = require('tty-table');
+const autoCompletePrompt= require('inquirer-autocomplete-prompt');
 const log = console.log;
 
 let forecastData = null;
@@ -30,24 +31,12 @@ const loadDatabase = () => {
 };
 
 const getCityName = () => {
-  inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
+  inquirer.registerPrompt('autocomplete', autoCompletePrompt);
   inquirer.prompt([{
     type: 'autocomplete',
     name: 'city',
     message: 'Please enter your city name:',
-    source: function(answersSoFar, input) {
-      input = input || '';
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          let result = citySearch.search(input);
-          resolve(
-            result.map((city) => {
-              return city.name;
-            })
-          );
-        }, 300);
-      });
-    }
+    source: async (answersSoFar, input = '') => citySearch.search(input).map(({ name }) => name)
   }]).then((answers) => {
     getCityForecast(answers.city);
   });
@@ -81,12 +70,12 @@ const getForecast = (day) => {
 };
 
 const makeForecastTable = () => {
-  let currentTemp = ['Now'];
-  let minTemp = ['Min'];
-  let maxTemp = ['Max'];
-  let weather = ['Weather'];
-  let windSpeed = ['Wind'];
-  let header = [
+  const currentTemp = ['Now'];
+  const minTemp = ['Min'];
+  const maxTemp = ['Max'];
+  const weather = ['Weather'];
+  const windSpeed = ['Wind'];
+  const header = [
     {
       align : "left",
       paddingLeft : 1,
@@ -95,8 +84,8 @@ const makeForecastTable = () => {
   ];
 
   for (let i = 1; i <= maxDays; i++) {
-    let day = getForecast(i);
-    let date = new Date(day.dt * 1000);
+    const day = getForecast(i);
+    const date = new Date(day.dt * 1000);
 
     header.push({
       value: date.toLocaleDateString('en-AU',{ weekday: 'long'})
@@ -109,9 +98,9 @@ const makeForecastTable = () => {
     windSpeed.push(day.wind.speed);
   }
 
-  let rows = [currentTemp, minTemp, maxTemp, weather, windSpeed];
+  const rows = [currentTemp, minTemp, maxTemp, weather, windSpeed];
 
-  let forecastTable = ttyTable(header, rows, {
+  const forecastTable = ttyTable(header, rows, {
     borderStyle : 1,
     borderColor : "blue",
     paddingBottom : 0,
@@ -128,7 +117,7 @@ const tryAgain = () => {
   log();
   inquirer.prompt([{
     type: 'list',
-    message: 'Would you like check another city?',
+    message: 'Would you like to check another city?',
     name: 'yesno',
     choices: ['Yes', 'No'],
   }]).then(answers => {
