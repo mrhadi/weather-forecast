@@ -1,7 +1,10 @@
 # Weather Forecast
 
-Weather forecast Node.js app to display the temperature and weather based on city name.
-App using https://openweathermap.org/ API.
+Weather forecast is a Node.js app to display the temperature and weather based on city name.
+
+App is using https://openweathermap.org/ API.
+
+![Alt text](./resources/weather-forecast.png)
 
 # Install Node.js
 
@@ -11,7 +14,7 @@ https://nodejs.org/
 
 
 # Get source code:
-git clone 
+git clone https://github.com/mrhadi/weather-forecast.git
 
 # Get dependencies
 npm install
