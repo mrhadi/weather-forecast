@@ -1,5 +1,6 @@
 const { version } = require('../package.json');
-const { openWeatherAPI, maxDays, dataPerDay } = require('./openweathermap');
+const { openWeatherAPI } = require('./openweathermap');
+const { maxDays, dataPerDay } = require('./constants');
 const chalk = require('chalk');
 const cityList = require('../resources/city.list');
 const inquirer = require('inquirer');
