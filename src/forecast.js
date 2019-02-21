@@ -19,8 +19,7 @@ const appInit = () => {
 
 const welcome = () => {
   log(chalk`{green Weather Forecast} {greenBright v.${version}}`);
-  log(chalk`{cyan App is using OpenWeatherMap API to present weather information.}`);
-  log();
+  log(chalk`{cyan App is using OpenWeatherMap API to present weather information.}\n`);
 };
 
 const loadDatabase = () => {
@@ -115,7 +114,6 @@ const makeForecastTable = () => {
 };
 
 const tryAgain = () => {
-  log();
   inquirer.prompt([{
     type: 'list',
     message: 'Would you like to check another city?',
@@ -126,8 +124,7 @@ const tryAgain = () => {
       getCityName();
     }
     else {
-      log();
-      log(chalk`{cyan Enjoy the rest of your day.}`);
+      log(chalk`\n{cyan Enjoy the rest of your day.}`);
     }
   });
 };
